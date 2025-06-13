@@ -1,0 +1,28 @@
+# CNVgenie: Integrated CNV Detection Pipeline
+# Python package requirements
+
+# Core scientific computing
+numpy>=1.19.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# Progress bars and user interface
+tqdm>=4.62.0
+
+# Data compression and file handling
+# (gzip support included in Python standard library)
+
+# Note: mosdepth is a separate binary tool that must be installed independently
+# Install via: conda install -c bioconda mosdepth
+# Or download from: https://github.com/brentp/mosdepth/releases
+
+# Optional dependencies for enhanced functionality
+# matplotlib>=3.3.0  # For future plotting capabilities
+# plotly>=5.0.0      # For interactive QC reports
+# pysam>=0.16.0      # For direct BAM/CRAM reading (future feature)
+
+# Development and testing dependencies (uncomment if developing)
+# pytest>=6.0.0
+# pytest-cov>=2.12.0
+# black>=21.0.0
+# flake8>=3.9.0

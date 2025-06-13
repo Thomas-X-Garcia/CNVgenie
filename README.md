@@ -8,6 +8,12 @@
 
 **CNVgenie** is a comprehensive, integrated pipeline for copy number variant (CNV) detection in Oxford Nanopore Technologies (ONT) long-read sequencing data aligned to telomere-to-telomere (T2T) reference genomes. This toolkit provides a complete workflow from raw BAM/CRAM files to final CNV calls, encompassing coverage analysis, baseline generation, and advanced detection algorithms specifically optimized for long-read sequencing data.
 
+### Motivation
+
+While existing tools like [QDNAseq](https://github.com/ccagc/QDNAseq) and Spectre ([Fritz Sedlazeck's version](https://github.com/fritzsedlazeck/Spectre), [ONT version](https://github.com/nanoporetech/ont-spectre)) offer excellent CNV analysis performance for ONT applications, they are incompatible with the [T2T-CHM13v2.0 reference genome](https://github.com/marbl/CHM13). This compatibility is crucial for comprehensive genomic analysis, particularly for the Y chromosome, which contains 57% N nucleotides (ambiguous bases) in the GRCh38 reference genome, whereas T2T-CHM13v2.0 provides complete, gap-free coverage. CNVgenie was developed to address this critical gap, enabling researchers to leverage the complete T2T reference genomes for accurate CNV detection. Importantly, while created with T2T-CHM13v2.0 in mind, CNVgenie's flexible design allows it to work with any reference genome, providing a versatile solution for diverse genomic analyses.
+
+### Pipeline Architecture
+
 The pipeline consists of four integrated modules:
 
 1. **Mosdepth Module**: Comprehensive batch processing for generating coverage depth profiles
@@ -1774,6 +1780,9 @@ else
     exit 1
 fi
 ```
+## Author
+
+Thomas X. Garcia, PhD, HCLD
 
 ## Citation
 

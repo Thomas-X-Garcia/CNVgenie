@@ -98,7 +98,7 @@ Testing with real genomic data has demonstrated excellent performance:
 ```bash
 git clone https://github.com/Thomas-X-Garcia/CNVgenie.git
 cd CNVgenie
-chmod +x cnv_pipeline_integrated.py
+chmod +x CNVgenie.py
 ```
 
 ### System Requirements
@@ -117,16 +117,16 @@ chmod +x cnv_pipeline_integrated.py
 # Complete CNV detection workflow
 
 # 1. Process alignments with mosdepth
-python3 cnv_pipeline_integrated.py --debug mosdepth sample_list.txt ./mosdepth_output/ --parallel 4
+python3 CNVgenie.py --debug mosdepth sample_list.txt ./mosdepth_output/ --parallel 4
 
 # 2. Create population baseline
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv ./mosdepth_output/*.summary.txt --min-samples 20
+python3 CNVgenie.py --debug baseline baseline.tsv ./mosdepth_output/*.summary.txt --min-samples 20
 
 # 3. Detect CNVs in test sample
-python3 cnv_pipeline_integrated.py --debug detect test_sample.summary.txt baseline.tsv --mode fast --show-summary
+python3 CNVgenie.py --debug detect test_sample.summary.txt baseline.tsv --mode fast --show-summary
 
 # 4. Run quality control
-python3 cnv_pipeline_integrated.py --debug qc ./mosdepth_output/*.summary.txt --output qc_report.txt
+python3 CNVgenie.py --debug qc ./mosdepth_output/*.summary.txt --output qc_report.txt
 ```
 
 ### ⚠️ Important: Debug Flag Placement
@@ -135,16 +135,16 @@ python3 cnv_pipeline_integrated.py --debug qc ./mosdepth_output/*.summary.txt --
 
 **✅ Correct:**
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.bam output/
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt
-python3 cnv_pipeline_integrated.py --debug detect sample.txt baseline.tsv
+python3 CNVgenie.py --debug mosdepth sample.bam output/
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt
+python3 CNVgenie.py --debug detect sample.txt baseline.tsv
 ```
 
 **❌ Incorrect:**
 ```bash
-python3 cnv_pipeline_integrated.py mosdepth --debug sample.bam output/
-python3 cnv_pipeline_integrated.py baseline --debug baseline.tsv samples/*.txt
-python3 cnv_pipeline_integrated.py detect --debug sample.txt baseline.tsv
+python3 CNVgenie.py mosdepth --debug sample.bam output/
+python3 CNVgenie.py baseline --debug baseline.tsv samples/*.txt
+python3 CNVgenie.py detect --debug sample.txt baseline.tsv
 ```
 
 **Why**: The `--debug` flag is a global argument that must precede subcommands in the current parser implementation.
@@ -162,13 +162,13 @@ python3 cnv_pipeline_integrated.py detect --debug sample.txt baseline.tsv
 
 ```bash
 # Main pipeline help
-python3 cnv_pipeline_integrated.py --help
+python3 CNVgenie.py --help
 
 # Module-specific help
-python3 cnv_pipeline_integrated.py mosdepth --help
-python3 cnv_pipeline_integrated.py baseline --help
-python3 cnv_pipeline_integrated.py detect --help
-python3 cnv_pipeline_integrated.py qc --help
+python3 CNVgenie.py mosdepth --help
+python3 CNVgenie.py baseline --help
+python3 CNVgenie.py detect --help
+python3 CNVgenie.py qc --help
 ```
 
 ---
@@ -194,7 +194,7 @@ The **mosdepth module** provides comprehensive batch processing capabilities for
 
 ### Single BAM File
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.bam ./output_directory/
+python3 CNVgenie.py --debug mosdepth sample.bam ./output_directory/
 ```
 
 ### Multiple Files from List
@@ -203,19 +203,19 @@ python3 cnv_pipeline_integrated.py --debug mosdepth sample.bam ./output_director
 ls *.bam > bam_files.txt
 
 # Process batch
-python3 cnv_pipeline_integrated.py --debug mosdepth bam_files.txt ./output_directory/ --parallel 4
+python3 CNVgenie.py --debug mosdepth bam_files.txt ./output_directory/ --parallel 4
 ```
 
 ### CRAM Files (requires reference)
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.cram ./output_directory/ --reference genome.fa
+python3 CNVgenie.py --debug mosdepth sample.cram ./output_directory/ --reference genome.fa
 ```
 
 ## Detailed Usage
 
 ### Command Syntax
 ```bash
-python3 cnv_pipeline_integrated.py [--debug] mosdepth [OPTIONS] alignment_input output_dir
+python3 CNVgenie.py [--debug] mosdepth [OPTIONS] alignment_input output_dir
 ```
 
 ## Input Files
@@ -317,18 +317,18 @@ output_directory/
 
 #### Single BAM File
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.bam ./output/
+python3 CNVgenie.py --debug mosdepth sample.bam ./output/
 ```
 
 #### Single CRAM File with Reference
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.cram ./output/ \
+python3 CNVgenie.py --debug mosdepth sample.cram ./output/ \
     --reference /path/to/reference.fa
 ```
 
 #### Batch Processing from File List
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth sample_list.txt ./output/
+python3 CNVgenie.py --debug mosdepth sample_list.txt ./output/
 ```
 
 ### Advanced Examples
@@ -336,19 +336,19 @@ python3 cnv_pipeline_integrated.py --debug mosdepth sample_list.txt ./output/
 #### High-Performance Parallel Processing
 ```bash
 # 4 parallel jobs, 8 threads each = 32 total cores
-python3 cnv_pipeline_integrated.py --debug mosdepth samples.txt ./output/ \
+python3 CNVgenie.py --debug mosdepth samples.txt ./output/ \
     --parallel 4 --threads 8
 ```
 
 #### Custom Bin Size for Large CNVs
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth samples.txt ./output/ \
+python3 CNVgenie.py --debug mosdepth samples.txt ./output/ \
     --bin-size 2000 --parallel 2
 ```
 
 #### High-Accuracy Mode (Slower)
 ```bash
-python3 cnv_pipeline_integrated.py --debug mosdepth samples.txt ./output/ \
+python3 CNVgenie.py --debug mosdepth samples.txt ./output/ \
     --no-fast-mode --threads 8
 ```
 
@@ -356,7 +356,7 @@ python3 cnv_pipeline_integrated.py --debug mosdepth samples.txt ./output/ \
 ```bash
 # Set reference via environment variable
 export REF_PATH=/path/to/reference.fa
-python3 cnv_pipeline_integrated.py --debug mosdepth cram_files.txt ./output/ \
+python3 CNVgenie.py --debug mosdepth cram_files.txt ./output/ \
     --parallel 2
 ```
 
@@ -375,7 +375,7 @@ SAMPLE_LIST="all_samples.txt"
 find $INPUT_DIR -name "*.bam" > $SAMPLE_LIST
 
 # Run mosdepth with optimal settings
-python3 cnv_pipeline_integrated.py --debug mosdepth $SAMPLE_LIST $OUTPUT_DIR \
+python3 CNVgenie.py --debug mosdepth $SAMPLE_LIST $OUTPUT_DIR \
     --reference $REFERENCE \
     --bin-size 500 \
     --parallel 4 \
@@ -409,18 +409,18 @@ The **baseline module** creates robust, normalized baseline references from mult
 
 ### Basic Baseline Creation
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt
+python3 CNVgenie.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt
 ```
 
 ### With Checkpoint Support
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt \
     --checkpoint-dir ./checkpoints --chunk-size 25
 ```
 
 ### Resume from Checkpoint
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv /path/to/mosdepth/*.summary.txt \
     --checkpoint-dir ./checkpoints --resume
 ```
 
@@ -428,7 +428,7 @@ python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv /path/to/mosdep
 
 ### Command Syntax
 ```bash
-python3 cnv_pipeline_integrated.py [--debug] baseline [OPTIONS] output_file sample_files...
+python3 CNVgenie.py [--debug] baseline [OPTIONS] output_file sample_files...
 ```
 
 ## Input Files
@@ -618,13 +618,13 @@ INFO - Final baseline: 58 samples, 6,047,891 regions
 
 #### Standard Baseline Creation
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline my_baseline.tsv \
+python3 CNVgenie.py --debug baseline my_baseline.tsv \
     /data/mosdepth/*.mosdepth.summary.txt
 ```
 
 #### With Custom Sample Threshold
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline my_baseline.tsv \
+python3 CNVgenie.py --debug baseline my_baseline.tsv \
     /data/mosdepth/*.mosdepth.summary.txt \
     --min-samples 30
 ```
@@ -633,7 +633,7 @@ python3 cnv_pipeline_integrated.py --debug baseline my_baseline.tsv \
 
 #### Large-Scale Processing with Checkpoints
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline population_baseline.tsv \
+python3 CNVgenie.py --debug baseline population_baseline.tsv \
     /data/cohort/*.mosdepth.summary.txt \
     --checkpoint-dir ./baseline_checkpoints \
     --chunk-size 25 \
@@ -643,7 +643,7 @@ python3 cnv_pipeline_integrated.py --debug baseline population_baseline.tsv \
 #### Resume After Interruption
 ```bash
 # Resume previous job
-python3 cnv_pipeline_integrated.py --debug baseline population_baseline.tsv \
+python3 CNVgenie.py --debug baseline population_baseline.tsv \
     /data/cohort/*.mosdepth.summary.txt \
     --checkpoint-dir ./baseline_checkpoints \
     --resume
@@ -663,7 +663,7 @@ CHECKPOINT_DIR="/data/checkpoints"
 mkdir -p $BASELINE_DIR $CHECKPOINT_DIR
 
 # Generate baseline with optimal settings
-python3 cnv_pipeline_integrated.py --debug baseline \
+python3 CNVgenie.py --debug baseline \
     $BASELINE_DIR/cohort_baseline.tsv \
     $MOSDEPTH_DIR/*.mosdepth.summary.txt \
     --checkpoint-dir $CHECKPOINT_DIR \
@@ -704,7 +704,7 @@ The baseline module includes a robust checkpoint system for handling large datas
 
 #### Enable Checkpoints
 ```bash
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt \
     --checkpoint-dir ./checkpoints
 ```
 
@@ -721,7 +721,7 @@ checkpoints/
 #### Automatic Resume Detection
 ```bash
 # Will automatically detect and resume if checkpoints exist
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt \
     --checkpoint-dir ./checkpoints --resume
 ```
 
@@ -738,7 +738,7 @@ rm -rf ./checkpoints/*
 
 # Resume from specific checkpoint
 ls -la ./checkpoints/  # Verify checkpoint files exist
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt \
     --checkpoint-dir ./checkpoints --resume
 ```
 
@@ -774,18 +774,18 @@ Recent testing with real T2T-aligned ONT data has demonstrated:
 
 ### Basic CNV Detection
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv
 ```
 
 ### Fast Mode with Custom Output
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --mode fast --output sample_cnvs.tsv
 ```
 
 ### With Sex Specification and Summary
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --sex XY --mode full --show-summary
 ```
 
@@ -793,7 +793,7 @@ python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt ba
 
 ### Command Syntax
 ```bash
-python3 cnv_pipeline_integrated.py [--debug] detect [OPTIONS] summary baseline
+python3 CNVgenie.py [--debug] detect [OPTIONS] summary baseline
 ```
 
 ## Detection Algorithms
@@ -979,18 +979,18 @@ Chromosome Distribution:
 
 #### Standard Detection
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv
 ```
 
 #### Specify Output File
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --output custom_cnvs.tsv
 ```
 
 #### With Known Sample Sex
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --sex XX --show-summary
 ```
 
@@ -998,19 +998,19 @@ python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt ba
 
 #### Fast Mode (Default)
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --mode fast --show-summary
 ```
 
 #### Classic Mode (High Accuracy)
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --mode classic --show-summary
 ```
 
 #### Full Mode (Balanced)
 ```bash
-python3 cnv_pipeline_integrated.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect sample.mosdepth.summary.txt baseline.tsv \
     --mode full --show-summary
 ```
 
@@ -1031,7 +1031,7 @@ for summary in $MOSDEPTH_DIR/*.mosdepth.summary.txt; do
     sample=$(basename $summary .mosdepth.summary.txt)
     echo "Processing $sample..."
     
-    python3 cnv_pipeline_integrated.py --debug detect $summary $BASELINE \
+    python3 CNVgenie.py --debug detect $summary $BASELINE \
         --mode fast \
         --output $CNV_DIR/${sample}.cnvs.tsv \
         --show-summary
@@ -1048,7 +1048,7 @@ BASELINE="baseline.tsv"
 
 for mode in classic fast full; do
     echo "Running $mode mode..."
-    python3 cnv_pipeline_integrated.py --debug detect $SAMPLE $BASELINE \
+    python3 CNVgenie.py --debug detect $SAMPLE $BASELINE \
         --mode $mode \
         --output sample001_${mode}.cnvs.tsv \
         --show-summary
@@ -1089,7 +1089,7 @@ fi
 
 # Run CNV detection
 echo "Starting CNV detection for $SAMPLE_ID..."
-python3 cnv_pipeline_integrated.py --debug detect $SUMMARY $BASELINE \
+python3 CNVgenie.py --debug detect $SUMMARY $BASELINE \
     --mode fast \
     --output $OUTPUT \
     --show-summary \
@@ -1212,12 +1212,12 @@ The **QC module** provides comprehensive quality control and reporting capabilit
 
 ### Basic QC Report
 ```bash
-python3 cnv_pipeline_integrated.py --debug qc ./mosdepth_output/*.summary.txt --output qc_report.txt
+python3 CNVgenie.py --debug qc ./mosdepth_output/*.summary.txt --output qc_report.txt
 ```
 
 ### Comprehensive QC Analysis
 ```bash
-python3 cnv_pipeline_integrated.py --debug qc ./mosdepth_output/*.summary.txt \
+python3 CNVgenie.py --debug qc ./mosdepth_output/*.summary.txt \
     --output comprehensive_qc.html --format html --detailed
 ```
 
@@ -1225,7 +1225,7 @@ python3 cnv_pipeline_integrated.py --debug qc ./mosdepth_output/*.summary.txt \
 
 ### Command Syntax
 ```bash
-python3 cnv_pipeline_integrated.py [--debug] qc [OPTIONS] sample_files...
+python3 CNVgenie.py [--debug] qc [OPTIONS] sample_files...
 ```
 
 ### QC Parameters
@@ -1322,7 +1322,7 @@ Error: Insufficient samples for baseline: 15 < 20
 **Solutions**:
 ```bash
 # Reduce minimum sample requirement
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt --min-samples 15
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt --min-samples 15
 
 # Or add more samples to input
 ```
@@ -1343,11 +1343,11 @@ Error: CRAM files require a reference genome
 **Solutions**:
 ```bash
 # Option 1: Use --reference flag
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.cram output/ --reference genome.fa
+python3 CNVgenie.py --debug mosdepth sample.cram output/ --reference genome.fa
 
 # Option 2: Set environment variable
 export REF_PATH=/path/to/genome.fa
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.cram output/
+python3 CNVgenie.py --debug mosdepth sample.cram output/
 ```
 
 #### mosdepth Not Found
@@ -1368,14 +1368,14 @@ MemoryError: Unable to allocate array
 **Solutions**:
 ```bash
 # Reduce chunk size
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt --chunk-size 10
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt --chunk-size 10
 
 # Use checkpoints to manage memory
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt \
     --checkpoint-dir ./checkpoints --chunk-size 15
 
 # Use memory-efficient fast mode for detection
-python3 cnv_pipeline_integrated.py --debug detect sample.summary.txt baseline.tsv --mode fast
+python3 CNVgenie.py --debug detect sample.summary.txt baseline.tsv --mode fast
 ```
 
 #### Missing Regions Files
@@ -1399,7 +1399,7 @@ Warning: Failed to load checkpoint: Invalid pickle data
 ```bash
 # Remove corrupted checkpoints and restart
 rm -rf checkpoint_dir/*
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv samples/*.txt \
+python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt \
     --checkpoint-dir ./checkpoints
 ```
 
@@ -1421,7 +1421,7 @@ grep "total" sample.mosdepth.summary.txt
 head -n 5 baseline.tsv
 
 # Try more sensitive mode
-python3 cnv_pipeline_integrated.py --debug detect sample.summary.txt baseline.tsv --mode classic
+python3 CNVgenie.py --debug detect sample.summary.txt baseline.tsv --mode classic
 ```
 
 #### Sex Detection Issues
@@ -1436,7 +1436,7 @@ Warning: Unable to determine sample sex, assuming XX
 **Solutions**:
 ```bash
 # Manually specify sex
-python3 cnv_pipeline_integrated.py --debug detect sample.summary.txt baseline.tsv --sex XY
+python3 CNVgenie.py --debug detect sample.summary.txt baseline.tsv --sex XY
 
 # Check X/Y coverage in summary file
 grep -E "chrX|chrY" sample.mosdepth.summary.txt
@@ -1498,8 +1498,8 @@ with open('baseline_metadata.json') as f:
 #### Cross-Mode Validation
 ```bash
 # Compare results between modes
-python3 cnv_pipeline_integrated.py --debug detect sample.summary.txt baseline.tsv --mode classic --output classic.cnvs.tsv
-python3 cnv_pipeline_integrated.py --debug detect sample.summary.txt baseline.tsv --mode fast --output fast.cnvs.tsv
+python3 CNVgenie.py --debug detect sample.summary.txt baseline.tsv --mode classic --output classic.cnvs.tsv
+python3 CNVgenie.py --debug detect sample.summary.txt baseline.tsv --mode fast --output fast.cnvs.tsv
 
 # Check concordance
 wc -l *.cnvs.tsv
@@ -1691,13 +1691,13 @@ samtools flagstat sample.bam
 # Integrated CNV detection workflow
 
 # 1. Mosdepth processing
-python3 cnv_pipeline_integrated.py --debug mosdepth sample.bam mosdepth_output/ --threads 8
+python3 CNVgenie.py --debug mosdepth sample.bam mosdepth_output/ --threads 8
 
 # 2. Baseline creation (if needed)
-python3 cnv_pipeline_integrated.py --debug baseline baseline.tsv mosdepth_output/*.summary.txt
+python3 CNVgenie.py --debug baseline baseline.tsv mosdepth_output/*.summary.txt
 
 # 3. CNV detection
-python3 cnv_pipeline_integrated.py --debug detect mosdepth_output/sample.mosdepth.summary.txt baseline.tsv \
+python3 CNVgenie.py --debug detect mosdepth_output/sample.mosdepth.summary.txt baseline.tsv \
     --mode fast --show-summary --output sample_cnvs.tsv
 
 # 4. Quality assessment
@@ -1748,7 +1748,7 @@ LOG_DIR="/logs/baseline"
 mkdir -p $OUTPUT_DIR $CHECKPOINT_DIR $LOG_DIR
 
 # Generate baseline
-python3 cnv_pipeline_integrated.py --debug baseline \
+python3 CNVgenie.py --debug baseline \
     $OUTPUT_DIR/${COHORT_NAME}_baseline.tsv \
     $INPUT_DIR/*.mosdepth.summary.txt \
     --checkpoint-dir $CHECKPOINT_DIR \

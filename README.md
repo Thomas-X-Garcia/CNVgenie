@@ -106,7 +106,7 @@ chmod +x cnv_pipeline_integrated.py
 - **Memory**: 8-32 GB RAM (depending on dataset size)
 - **Storage**: Variable (input files + ~20% for outputs)
 - **CPU**: Multi-core recommended for parallel processing
-- **OS**: Linux/Unix (tested on Ubuntu, CentOS)
+- **OS**: Linux/Unix (tested on Ubuntu 22.04.4 LTS)
 
 ## Complete Workflow
 
@@ -556,7 +556,7 @@ When using `--checkpoint-dir`, additional files are created:
 - **Maximum**: No limit (linear scaling with chunk processing)
 
 #### Quality Thresholds (ONT-optimized)
-- **Minimum coverage**: 7x mean coverage
+- **Minimum coverage**: 25x mean coverage
 - **Maximum CV**: 1.5 (coefficient of variation)
 - **Quality score**: ≥0.5 (composite score)
 
@@ -571,7 +571,7 @@ When using `--checkpoint-dir`, additional files are created:
 - **Coverage MAD**: Robust variability measure
 
 #### Quality Scores
-- **Coverage Depth Score**: Based on mean coverage (7x-25x+ scale)
+- **Coverage Depth Score**: Based on mean coverage (25x+ scale)
 - **Uniformity Score**: Based on coefficient of variation
 - **Consistency Score**: Based on MAD-to-mean ratio
 - **Outlier Score**: Based on fraction of outlier bins

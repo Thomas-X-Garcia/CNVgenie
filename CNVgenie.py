@@ -2362,20 +2362,20 @@ def main():
 Complete Workflow Examples:
 
 # 1. Run mosdepth on BAM/CRAM files
-python cnv_pipeline_integrated.py mosdepth sample.bam ./mosdepth_output/
-python cnv_pipeline_integrated.py mosdepth bam_files.txt ./mosdepth_output/ --parallel 4
+python CNVgenie.py mosdepth sample.bam ./mosdepth_output/
+python CNVgenie.py mosdepth bam_files.txt ./mosdepth_output/ --parallel 4
 
 # 2. Create baseline from mosdepth output
-python cnv_pipeline_integrated.py baseline baseline.tsv ./mosdepth_output/*.summary.txt
+python CNVgenie.py baseline baseline.tsv ./mosdepth_output/*.summary.txt
 
 # 3. Detect CNVs using different modes
-python cnv_pipeline_integrated.py detect sample.summary.txt baseline.tsv --mode fast
-python cnv_pipeline_integrated.py detect sample.summary.txt baseline.tsv --mode classic --show-summary
+python CNVgenie.py detect sample.summary.txt baseline.tsv --mode fast
+python CNVgenie.py detect sample.summary.txt baseline.tsv --mode classic --show-summary
 
 # 4. Complete workflow
-python cnv_pipeline_integrated.py mosdepth samples.txt ./mosdepth_out/ --parallel 2
-python cnv_pipeline_integrated.py baseline baseline.tsv ./mosdepth_out/*.summary.txt --min-samples 20
-python cnv_pipeline_integrated.py detect sample.summary.txt baseline.tsv --mode fast --show-summary
+python CNVgenie.py mosdepth samples.txt ./mosdepth_out/ --parallel 2
+python CNVgenie.py baseline baseline.tsv ./mosdepth_out/*.summary.txt --min-samples 20
+python CNVgenie.py detect sample.summary.txt baseline.tsv --mode fast --show-summary
 
 Key Features:
 - Integrated mosdepth processing with parallel support
@@ -2401,18 +2401,18 @@ Key Features:
         epilog="""
 Example usage:
     # Process a single BAM file
-    python cnv_pipeline_integrated.py mosdepth sample.bam output_dir/
+    python CNVgenie.py mosdepth sample.bam output_dir/
     
     # Process a single CRAM file (requires reference)
-    python cnv_pipeline_integrated.py mosdepth sample.cram output_dir/ --reference genome.fa
+    python CNVgenie.py mosdepth sample.cram output_dir/ --reference genome.fa
     
     # Process multiple files from a list
-    python cnv_pipeline_integrated.py mosdepth alignment_files.txt output_dir/
+    python CNVgenie.py mosdepth alignment_files.txt output_dir/
     
     # With custom parameters
-    python cnv_pipeline_integrated.py mosdepth --bin-size 1000 --threads 8 alignment_files.txt output_dir/
-    python cnv_pipeline_integrated.py mosdepth --parallel 4 sample.bam output_dir/
-    python cnv_pipeline_integrated.py mosdepth --no-fast-mode sample.cram output_dir/ --reference genome.fa
+    python CNVgenie.py mosdepth --bin-size 1000 --threads 8 alignment_files.txt output_dir/
+    python CNVgenie.py mosdepth --parallel 4 sample.bam output_dir/
+    python CNVgenie.py mosdepth --no-fast-mode sample.cram output_dir/ --reference genome.fa
 
 Note: CRAM files require a reference genome. Either use --reference or set the REF_PATH 
 environment variable to the reference genome path.

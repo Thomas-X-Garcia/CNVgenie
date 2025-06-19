@@ -821,7 +821,7 @@ CNVgenie offers three detection modes, each optimized for different scenarios:
 
 | Mode | Speed | Accuracy | Memory | Best Use Case |
 |---|---|---|---|---|
-| Classic | ** | ***** | *** | Clinical, research, validation |
+| Classic | * | ***** | *** | Clinical, research, validation |
 | Fast | ***** | **** | ***** | large studies |
 | Full | *** | ***** | **** | Balanced applications |
 

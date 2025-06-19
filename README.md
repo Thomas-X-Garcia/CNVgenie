@@ -1,9 +1,5 @@
 # CNVgenie: Integrated CNV Detection Pipeline for T2T
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![GitHub](https://img.shields.io/badge/GitHub-CNVgenie-blue)](https://github.com/Thomas-X-Garcia/CNVgenie)
-
 ## Overview
 
 **CNVgenie** is a comprehensive, integrated pipeline for copy number variant (CNV) detection in Oxford Nanopore Technologies (ONT) long-read sequencing data aligned to telomere-to-telomere (T2T) reference genomes. This toolkit provides a complete workflow from raw BAM/CRAM files to final CNV calls, encompassing coverage analysis, baseline generation, and advanced detection algorithms specifically optimized for long-read sequencing data.
@@ -50,18 +46,18 @@ BAM/CRAM Files → Mosdepth → Baseline Generation → CNV Detection → Qualit
 
 ### Key Features
 
-✅ **Integrated Workflow**: Complete pipeline from alignments to CNV calls  
-✅ **ONT Optimized**: Specialized algorithms for long-read sequencing data  
-✅ **Multiple Detection Modes**: Classic, fast, and full algorithms  
-✅ **Robust Statistics**: Median-based methods resistant to outliers  
-✅ **Scalable Processing**: Parallel processing and memory optimization  
-✅ **Comprehensive QC**: Quality control at every pipeline stage  
-✅ **Checkpoint/Resume**: Fault-tolerant processing for large datasets  
-✅ **Production Ready**: Extensive error handling and validation  
+**Integrated Workflow**: Complete pipeline from alignments to CNV calls  
+**ONT Optimized**: Specialized algorithms for long-read sequencing data  
+**Multiple Detection Modes**: Classic, fast, and full algorithms  
+**Robust Statistics**: Median-based methods resistant to outliers  
+**Scalable Processing**: Parallel processing and memory optimization  
+**Comprehensive QC**: Quality control at every pipeline stage  
+**Checkpoint/Resume**: Fault-tolerant processing for large datasets  
+**Production Ready**: Extensive error handling and validation  
 
 ### Recent Performance Testing Results
 
-**✅ Production-Scale Validation Complete**  
+**Production-Scale Validation Complete**  
 Testing with real genomic data has demonstrated excellent performance:
 
 - **54,812 CNVs detected** in 35.6 seconds (whole genome analysis)
@@ -129,18 +125,18 @@ python3 CNVgenie.py --debug detect test_sample.summary.txt baseline.tsv --mode f
 python3 CNVgenie.py --debug qc ./mosdepth_output/*.summary.txt --output qc_report.txt
 ```
 
-### ⚠️ Important: Debug Flag Placement
+### Important: Debug Flag Placement
 
 **The `--debug` flag must be placed BEFORE the module name**, not after it:
 
-**✅ Correct:**
+**Correct:**
 ```bash
 python3 CNVgenie.py --debug mosdepth sample.bam output/
 python3 CNVgenie.py --debug baseline baseline.tsv samples/*.txt
 python3 CNVgenie.py --debug detect sample.txt baseline.tsv
 ```
 
-**❌ Incorrect:**
+** Incorrect:**
 ```bash
 python3 CNVgenie.py mosdepth --debug sample.bam output/
 python3 CNVgenie.py baseline --debug baseline.tsv samples/*.txt
@@ -181,14 +177,14 @@ The **mosdepth module** provides comprehensive batch processing capabilities for
 
 ## Features
 
-✅ **Batch Processing**: Process single files or batches from file lists  
-✅ **Parallel Execution**: Multi-core processing with configurable parallelism  
-✅ **Format Support**: Both BAM and CRAM files with automatic format detection  
-✅ **Comprehensive Validation**: Automatic index file checking and validation  
-✅ **Progress Tracking**: Real-time logging and progress monitoring  
-✅ **Error Recovery**: Robust error handling with detailed reporting  
-✅ **Memory Efficient**: Optimized for large-scale genomic datasets  
-✅ **Reference Support**: Full CRAM support with reference genome handling  
+**Batch Processing**: Process single files or batches from file lists  
+**Parallel Execution**: Multi-core processing with configurable parallelism  
+**Format Support**: Both BAM and CRAM files with automatic format detection  
+**Comprehensive Validation**: Automatic index file checking and validation  
+**Progress Tracking**: Real-time logging and progress monitoring  
+**Error Recovery**: Robust error handling with detailed reporting  
+**Memory Efficient**: Optimized for large-scale genomic datasets  
+**Reference Support**: Full CRAM support with reference genome handling  
 
 ## Quick Start
 
@@ -395,15 +391,15 @@ The **baseline module** creates robust, normalized baseline references from mult
 
 ## Features
 
-✅ **Robust Statistics**: Uses median and MAD for outlier-resistant baselines  
-✅ **Quality Control**: Comprehensive QC metrics and sample filtering  
-✅ **Checkpoint/Resume**: Fault-tolerant processing with resume capability  
-✅ **Chunked Processing**: Memory-efficient handling of large datasets  
-✅ **Sex Detection**: Automatic sex determination from X/Y coverage ratios  
-✅ **Outlier Removal**: Intelligent filtering of problematic regions and samples  
-✅ **Flexible Parsing**: Handles multiple baseline file formats automatically  
-✅ **Metadata Export**: Detailed sample statistics and quality metrics  
-✅ **ONT Optimized**: Specialized QC thresholds for Oxford Nanopore data  
+**Robust Statistics**: Uses median and MAD for outlier-resistant baselines  
+**Quality Control**: Comprehensive QC metrics and sample filtering  
+**Checkpoint/Resume**: Fault-tolerant processing with resume capability  
+**Chunked Processing**: Memory-efficient handling of large datasets  
+**Sex Detection**: Automatic sex determination from X/Y coverage ratios  
+**Outlier Removal**: Intelligent filtering of problematic regions and samples  
+**Flexible Parsing**: Handles multiple baseline file formats automatically  
+**Metadata Export**: Detailed sample statistics and quality metrics  
+**ONT Optimized**: Specialized QC thresholds for Oxford Nanopore data  
 
 ## Quick Start
 
@@ -465,9 +461,9 @@ mosdepth_output/
 
 | File Type | Required Extensions | Auto-Detection |
 |---|---|---|
-| Summary files | `.mosdepth.summary.txt` | ✅ From command line |
-| Regions files | `.regions.bed.gz` | ✅ Automatic from summary path |
-| Index files | `.regions.bed.gz.csi` | ✅ Optional (speeds access) |
+| Summary files | `.mosdepth.summary.txt` | From command line |
+| Regions files | `.regions.bed.gz` | Automatic from summary path |
+| Index files | `.regions.bed.gz.csi` | Optional (speeds access) |
 
 ## Output Files
 
@@ -752,14 +748,14 @@ The **detection module** provides advanced copy number variant (CNV) detection a
 
 ## Features
 
-✅ **Multiple Detection Modes**: Classic, fast, and full algorithms for different needs  
-✅ **ONT Optimized**: Specialized thresholds and algorithms for long-read data  
-✅ **Sex-Aware Detection**: Proper ploidy handling for X/Y chromosomes  
-✅ **Robust Statistics**: Median-based normalization resistant to outliers  
-✅ **Fast Processing**: Vectorized operations and efficient data structures  
-✅ **Comprehensive Output**: Detailed CNV calls with quality scores  
-✅ **Flexible Thresholds**: Customizable parameters for different data types  
-✅ **Memory Efficient**: Optimized for large-scale genomic datasets  
+**Multiple Detection Modes**: Classic, fast, and full algorithms for different needs  
+**ONT Optimized**: Specialized thresholds and algorithms for long-read data  
+**Sex-Aware Detection**: Proper ploidy handling for X/Y chromosomes  
+**Robust Statistics**: Median-based normalization resistant to outliers  
+**Fast Processing**: Vectorized operations and efficient data structures  
+**Comprehensive Output**: Detailed CNV calls with quality scores  
+**Flexible Thresholds**: Customizable parameters for different data types  
+**Memory Efficient**: Optimized for large-scale genomic datasets  
 
 ### Validated Performance
 
@@ -825,9 +821,9 @@ CNVgenie offers three detection modes, each optimized for different scenarios:
 
 | Mode | Speed | Accuracy | Memory | Best Use Case |
 |---|---|---|---|---|
-| Classic | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Clinical, research, validation |
-| Fast | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | large studies |
-| Full | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Balanced applications |
+| Classic | ** | ***** | *** | Clinical, research, validation |
+| Fast | ***** | **** | ***** | large studies |
+| Full | *** | ***** | **** | Balanced applications |
 
 ## Input Files
 
@@ -1199,14 +1195,14 @@ The **QC module** provides comprehensive quality control and reporting capabilit
 
 ## Features
 
-✅ **Sample-Level QC**: Coverage, uniformity, and alignment quality metrics  
-✅ **CNV-Level QC**: Call quality, size distributions, and consistency checks  
-✅ **Cohort Analysis**: Population-level statistics and outlier detection  
-✅ **Interactive Reports**: Detailed HTML and text-based QC reports  
-✅ **Threshold Validation**: Automated quality threshold checking  
-✅ **Performance Metrics**: Pipeline timing and resource usage statistics  
-✅ **Visual Summaries**: Quality distribution plots and trend analysis  
-✅ **Export Capabilities**: Multiple output formats for downstream analysis  
+**Sample-Level QC**: Coverage, uniformity, and alignment quality metrics  
+**CNV-Level QC**: Call quality, size distributions, and consistency checks  
+**Cohort Analysis**: Population-level statistics and outlier detection  
+**Interactive Reports**: Detailed HTML and text-based QC reports  
+**Threshold Validation**: Automated quality threshold checking  
+**Performance Metrics**: Pipeline timing and resource usage statistics  
+**Visual Summaries**: Quality distribution plots and trend analysis  
+**Export Capabilities**: Multiple output formats for downstream analysis  
 
 ## Quick Start
 

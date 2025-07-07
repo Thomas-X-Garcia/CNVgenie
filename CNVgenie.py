@@ -50,6 +50,7 @@ MIN_MAPPABILITY = 0.5  # Minimum mappability score to include region
 MIN_SAMPLES_FOR_BASELINE = 20  # Minimum samples required for robust baseline
 DEFAULT_BIN_SIZE = 500  # Default bin size from mosdepth
 CHUNK_SIZE = 100000  # Process regions in chunks for memory efficiency
+MIN_VARIANCE_FOR_TTEST = 1e-10  # Minimum variance to attempt t-test
 
 # Global utility functions
 def validate_file_exists(filepath: str, description: str = "File") -> None:
@@ -262,6 +263,8 @@ class MosdepthProcessor:
             '-n',  # don't output per-base depth
             '-t', str(threads),  # number of threads
             '--by', str(bin_size),  # bin size
+            '-Q', '20', # mapping quality threshold (default: 20)
+            # '-F', '3844', # Also excludes supplementary alignments (1796 | 2048 = 3844)
         ]
         
         # Add fast mode flag if enabled
@@ -1579,38 +1582,77 @@ class CNVDetector(FlexibleBaselineParser):
         return segments
     
     def _find_changepoints(self, values: np.ndarray, min_segment_size: int = 3) -> List[int]:
-        """Find changepoints using recursive binary segmentation."""
+        """Find changepoints using recursive binary segmentation with improved numerical stability."""
         changepoints = []
         n = len(values)
         
         if n < 2 * min_segment_size:
             return changepoints
         
+        # Define thresholds for different metrics
+        T_STAT_THRESHOLD = 3.0  # Standard threshold for t-statistic (p < 0.01 for moderate df)
+        MEAN_DIFF_THRESHOLD = 0.3  # Biologically meaningful difference in log2 space
+                                   # 0.3 in log2 = ~23% change, typical CNV detection threshold
+        
         # Use recursive binary segmentation
         def binary_segment(start: int, end: int, depth: int = 0):
             if depth > 10 or end - start < 2 * min_segment_size:
                 return
             
-            max_stat = 0
             best_pos = -1
+            best_score = 0
+            best_metric = None
             
             # Test each possible split point
             for pos in range(start + min_segment_size, end - min_segment_size):
                 left = values[start:pos]
                 right = values[pos:end]
                 
-                # T-statistic for difference in means
                 if len(left) > 1 and len(right) > 1:
-                    try:
-                        t_stat, p_value = stats.ttest_ind(left, right, equal_var=False)
-                        if abs(t_stat) > max_stat:
-                            max_stat = abs(t_stat)
-                            best_pos = pos
-                    except:
-                        continue
+                    left_mean = np.mean(left)
+                    right_mean = np.mean(right)
+                    mean_diff = abs(left_mean - right_mean)
+                    
+                    # Calculate variance for both segments
+                    left_var = np.var(left, ddof=1)
+                    right_var = np.var(right, ddof=1)
+                    
+                    # Decide which metric to use based on variance
+                    if left_var < MIN_VARIANCE_FOR_TTEST or right_var < MIN_VARIANCE_FOR_TTEST:
+                        # Low variance: use mean difference
+                        if mean_diff >= MEAN_DIFF_THRESHOLD:
+                            # Normalize to 0-1 scale for comparison
+                            normalized_score = mean_diff / (MEAN_DIFF_THRESHOLD * 2)  # Normalize to ~0-1
+                            if normalized_score > best_score:
+                                best_score = normalized_score
+                                best_pos = pos
+                                best_metric = 'mean_diff'
+                    else:
+                        # Sufficient variance: try t-test
+                        try:
+                            t_stat, _ = stats.ttest_ind(left, right, equal_var=False)
+                            t_stat_abs = abs(t_stat)
+                            
+                            if t_stat_abs >= T_STAT_THRESHOLD:
+                                # Normalize to 0-1 scale for comparison
+                                normalized_score = t_stat_abs / (T_STAT_THRESHOLD * 2)  # Normalize to ~0-1
+                                if normalized_score > best_score:
+                                    best_score = normalized_score
+                                    best_pos = pos
+                                    best_metric = 't_stat'
+                                    
+                        except Exception as e:
+                            # T-test failed, fall back to mean difference
+                            logger.debug(f"T-test failed at position {pos}: {e}")
+                            if mean_diff >= MEAN_DIFF_THRESHOLD:
+                                normalized_score = mean_diff / (MEAN_DIFF_THRESHOLD * 2)
+                                if normalized_score > best_score:
+                                    best_score = normalized_score
+                                    best_pos = pos
+                                    best_metric = 'mean_diff'
             
-            # If significant changepoint found, recursively segment
-            if max_stat > 3.0 and best_pos > 0:  # Threshold for significance
+            # If a significant changepoint was found, recursively segment
+            if best_pos > 0 and best_metric is not None:
                 changepoints.append(best_pos)
                 binary_segment(start, best_pos, depth + 1)
                 binary_segment(best_pos, end, depth + 1)
